@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-// templ - single template
+// templ is a single template
 type templateHandler struct {
 	once     sync.Once
 	filename string
