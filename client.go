@@ -5,16 +5,9 @@ import (
 )
 
 /*
-	forward: a channel that holds incoming messages
-	that should be forwarded to the other clients.
-*/
-type room struct {
-	forward chan []byte
-}
-
-/*
 	client: a single chatting user
 	socket: the web socket for this client
+	send: channel on which the messages are sent
 	room: the room this client is chatting in
 */
 type client struct {
