@@ -4,16 +4,14 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-/*
-	client: a single chatting user
-	socket: the web socket for this client
-	send: channel on which the messages are sent
-	room: the room this client is chatting in
-*/
+// client: a single chatting user
 type client struct {
+	// socket: the web socket for this client
 	socket *websocket.Conn
-	send   chan []byte
-	room   *room
+	// send: channel on which the messages are sent
+	send chan []byte
+	// room: the room this client is chatting in
+	room *room
 }
 
 func (c *client) read() {
