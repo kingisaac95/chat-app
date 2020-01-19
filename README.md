@@ -23,11 +23,6 @@ Distributed under the MIT license. See ``LICENSE`` for more information.
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request to branch `dev`
 
-
-## License
-
-The MIT License (MIT). Please see [License File](https://github.com/kingisaac95/chat-app/blob/master/LICENSE) for more information.
-
 <sup>1</sup> Nkata means chat/dicuss in Igbo language
 
 Built with :heart:
