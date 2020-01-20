@@ -1,4 +1,4 @@
-module github.com/kingisaac95/nkata
+module chat_app
 
 go 1.13
 
