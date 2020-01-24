@@ -1,8 +1,9 @@
 package main
 
 import (
-	"flag"
+	"chat_app/chat"
 	"chat_app/trace"
+	"flag"
 	"log"
 	"net/http"
 	"os"
@@ -30,14 +31,14 @@ func main() {
 	flag.Parse() // parse flags and extract appropriate information
 
 	// new room setup
-	r := newRoom()
-	r.tracer = trace.New(os.Stdout)
+	r := chat.NewRoom()
+	r.Tracer = trace.New(os.Stdout)
 
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 
 	// initialize the room
-	go r.run()
+	go r.Run()
 
 	// start the web server or log error
 	log.Println("Starting server on", *port)
