@@ -2,11 +2,9 @@ package main
 
 import (
 	"chat_app/chat"
-	"chat_app/trace"
 	"flag"
 	"log"
 	"net/http"
-	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
@@ -32,7 +30,6 @@ func main() {
 
 	// new room setup
 	r := chat.NewRoom()
-	r.Tracer = trace.New(os.Stdout)
 
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
