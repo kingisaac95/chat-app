@@ -1,6 +1,7 @@
 package main
 
 import (
+	"chat_app/auth"
 	"chat_app/chat"
 	"flag"
 	"log"
@@ -31,7 +32,7 @@ func main() {
 	// new room setup
 	r := chat.NewRoom()
 
-	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/", auth.Required(&templateHandler{filename: "chat.html"}))
 	http.Handle("/room", r)
 
 	// initialize the room
