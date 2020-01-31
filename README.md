@@ -13,11 +13,11 @@ This is still largely a WIP, but I'll keep updating it till I'm done
 
 Orjiewuru Kingdom – [@kingisaac95](https://twitter.com/kingisaac95), kingdom.orjiewuru@gmail.com
 
-Distributed under the MIT license. See ``LICENSE`` for more information.
+Distributed under the MIT license.
 
 ## Contributing
 
-1. [Fork it](<https://github.com/kingisaac95/chat-app/fork>)
+1. [Fork it](https://github.com/kingisaac95/chat-app/fork)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
