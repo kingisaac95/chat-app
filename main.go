@@ -34,6 +34,7 @@ func main() {
 
 	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.Handle("/chat", auth.Required(&templateHandler{filename: "chat.html"}))
+	http.HandleFunc("/auth/", auth.LoginHandler)
 	http.Handle("/room", r)
 
 	// initialize the room
