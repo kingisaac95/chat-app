@@ -9,6 +9,14 @@ they choose. These are done via different threads(goroutines).
 
 This is still largely a WIP, but I'll keep updating it till I'm done
 
+## Enviroment Variables
+
+```
+touch .env; cp .env-sample .env
+```
+
+Visit Google Cloud Console, navigate to API & Services and click on the Credentials section to get the API key and secret.
+
 ## Meta
 
 Orjiewuru Kingdom – [@kingisaac95](https://twitter.com/kingisaac95), kingdom.orjiewuru@gmail.com

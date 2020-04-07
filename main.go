@@ -6,9 +6,15 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 	"text/template"
+
+	"github.com/joho/godotenv"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/google"
+	"github.com/stretchr/objx"
 )
 
 // templ is a single template
@@ -22,12 +28,31 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
-	t.templ.Execute(w, r)
+	data := map[string]interface{}{
+		"Host": r.Host,
+	}
+	if authCookie, err := r.Cookie("auth"); err == nil {
+		data["UserData"] = objx.MustFromBase64(authCookie.Value)
+	}
+	t.templ.Execute(w, data)
 }
 
 func main() {
 	var port = flag.String("port", ":8080", "The port where our application runs.")
 	flag.Parse() // parse flags and extract appropriate information
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	googleClientID := os.Getenv("GOOGLE_CLIENT_ID")
+	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
+	googleRedirectURL := os.Getenv("GOOGLE_REDIRECT_URL")
+	securityKey := os.Getenv("SECURITY_KEY")
+
+	gomniauth.SetSecurityKey(securityKey)
+	gomniauth.WithProviders(google.New(googleClientID, googleClientSecret, googleRedirectURL))
 
 	// new room setup
 	r := chat.NewRoom()

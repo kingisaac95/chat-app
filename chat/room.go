@@ -2,15 +2,17 @@ package chat
 
 import (
 	"chat_app/trace"
-	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/websocket"
+	"github.com/stretchr/objx"
 )
 
 type room struct {
 	// forward: a channel that holds incoming messages
 	// that should be forwarded to the other clients.
-	forward chan []byte
+	forward chan *message
 	// join: a channel for clients wishing to join the room
 	join chan *client
 	// leave: a channel for clients wishing to leave the room
@@ -24,7 +26,7 @@ type room struct {
 // NewRoom helper for creating rooms
 func NewRoom() *room {
 	return &room{
-		forward: make(chan []byte),
+		forward: make(chan *message),
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
@@ -45,7 +47,7 @@ func (r *room) Run() {
 			close(client.send)
 			r.Tracer.Trace("Client left.")
 		case msg := <-r.forward:
-			r.Tracer.Trace("Message received: ", string(msg))
+			r.Tracer.Trace("Message received: ", msg.Message)
 			for client := range r.clients {
 				client.send <- msg
 				r.Tracer.Trace(" -- sent to client.")
@@ -73,11 +75,18 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		log.Fatal("ServeHTTP:", err)
 		return
 	}
+
+	authCookie, err := req.Cookie("auth")
+	if err != nil {
+		log.Fatal("Failed to get auth cookie:", err)
+		return
+	}
 	// create a client from the socket
 	client := &client{
-		socket: socket,
-		send:   make(chan []byte, messageBufferSize),
-		room:   r,
+		socket:   socket,
+		send:     make(chan *message, messageBufferSize),
+		room:     r,
+		userData: objx.MustFromBase64(authCookie.Value),
 	}
 	// add the client to the current room
 	r.join <- client
